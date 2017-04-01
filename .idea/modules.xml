@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/vandyinnovation.com.iml" filepath="$PROJECT_DIR$/.idea/modules/vandyinnovation.com.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/vandyinnovation.com_main.iml" filepath="$PROJECT_DIR$/.idea/modules/vandyinnovation.com_main.iml" group="vandyinnovation.com" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/vandyinnovation.com_test.iml" filepath="$PROJECT_DIR$/.idea/modules/vandyinnovation.com_test.iml" group="vandyinnovation.com" />
     </modules>
   </component>
 </project>

@@ -1,5 +1,6 @@
 package io.vertx.starter;
 
+import io.spuri.vmil.Main;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -10,14 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public class MainVerticleTest {
+public class MainTest {
 
   private Vertx vertx;
 
   @Before
   public void setUp(TestContext tc) {
     vertx = Vertx.vertx();
-    vertx.deployVerticle(MainVerticle.class.getName(), tc.asyncAssertSuccess());
+    vertx.deployVerticle(Main.class.getName(), tc.asyncAssertSuccess());
   }
 
   @After
