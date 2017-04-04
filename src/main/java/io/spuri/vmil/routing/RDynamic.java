@@ -1,16 +1,17 @@
 package io.spuri.vmil.routing;
 
-import io.vertx.ext.web.Router;
+import io.spuri.vmil.Main;
 
 /**
  * Created by flyin on 4/1/2017.
  */
-public class RDynamic extends IRoutes {
-  public RDynamic(Router router) {
-    super(router);
+public class RDynamic extends ARouting {
+  public RDynamic(Main main) {
+    super(main);
   }
 
-  public void attach() {
+  @Override
+  public void onReady() {
 
   }
 }
