@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    {% include components/header.html %}
+    <body>
+        {% include components/navbar.html %}
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="vmil-msg col s12 m12 l12 blue-grey-text text-darken-3">
+                        <p class="flow-text">{%= message %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    {% if (locals.img && locals.img.src) { %}
+                    <div class="col s12 m12 l12 center">
+                        <img class="vmil-img responsive-img hoverable" src="/img/{%= img.src %}"
+                             alt="{% if (locals.img.alt) %} {%= img.alt %}"/>
+                    </div>
+                    {% } %}
+                </div>
+                <div class="row">
+                    {% if (locals.emoji) { %}
+                    <div class="col s12 m12 l12 center">
+                        <i class="twa twa-5x twa-{%= locals.emoji %}"></i>
+                    </div>
+                    {% } %}
+                </div>
+            </div>
+
+        </main>
+        {% include components/footer.html %}
+    </body>
+</html>

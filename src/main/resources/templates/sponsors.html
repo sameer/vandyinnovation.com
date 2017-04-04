@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    {% include components/header.html %}
+    <body>
+        {% include components/navbar.html %}
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m12 l12"><h3 class="center-align">{%= locals.title %}</h3></div>
+                </div>
+                <div class="row valign-wrapper">
+                    {% if (locals.data && locals.data.length !== 0) { %}
+                    {% for (var i = 0; i < locals.data.length; i += 1) { %}
+                    <div class="col s12 m6 l6">
+                        <a href="{%= locals.data[i].href %}"><img class="responsive-img valign" src="{%= locals.data[i].src %}"></a>
+                    </div>
+
+                    <!--<div class="caption center-align">-->
+                    <!--<h5 class="light grey-text text-lighten-3">Caption!</h5>-->
+                    <!--</div>-->
+                    {% } %}
+                    {% } else { %}
+                    <div class="col s12 m12 l12 center-align">
+                        <p class="flow-text">There are no pictures at the moment! Please check back again later!</p>
+                    </div>
+                    {% } %}
+                </div>
+            </div>
+
+        </main>
+        {% include components/footer.html %}
+    </body>
+</html>

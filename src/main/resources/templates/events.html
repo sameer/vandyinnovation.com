@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    {% include components/header.html %}
+    <body>
+        {% include components/navbar.html %}
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m12 l12"><h3 class="center-align">Events</h3></div>
+                </div>
+                <div class="row">
+                    {% if (locals.data) { %}
+                    {% for (var i = 0; i < locals.data.length; i += 1) { %}
+                    <div class="col s12 m12 l8 offset-l2 {% if (locals.data[i].date.ended) { %}vmil-ended{% } %}">
+                        <div class="card extralarge hoverable sticky-action">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="{%if (!locals.data[i].date.ended){%}activator{%}%} " src="{%= locals.data[i].image %}">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title {%if (!locals.data[i].date.ended){%}activator{%}%}  grey-text text-darken-4">{%= locals.data[i].title %}<i
+                                            class="material-icons right small">more_vert</i></span>
+
+                                <p class="flow-text right-align">
+                                <span> <a target="_blank"
+                                          href="https://google.com/maps/place/{%= locals.data[i].address %}"><i
+                                                class="material-icons right small">location_on</i>{%= locals.data[i].where %}
+                                    </a>
+                                </span>
+                                    <br/>
+                                    <span><i
+                                                class="material-icons right small">schedule</i>{%= locals.data[i].date.stamp %}
+                                </span>
+                                </p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title {%if (!locals.data[i].date.ended){%}activator{%}%} grey-text text-darken-4">{%= locals.data[i].title %}<i class="material-icons right">close</i></span>
+                                <p class="flow-text">{%- locals.data[i].details %}
+                                </p>
+                            </div>
+                            <div class="card-action"><p class="flow-text">
+                                    {% if (locals.data[i].date.ended) { %}
+                                    <a href="#">ENDED</a>
+                                    {% } else { %}
+
+                                    {% if (locals.data[i].facebook) { %}
+                                    <a target="_blank" href="{%= locals.data[i].facebook %}">Facebook&nbsp;<i
+                                                class="material-icons small">open_in_new</i></a>
+                                    {% } %}
+                                    {% if (locals.data[i].twitter) { %}
+                                    <a target="_blank" href="{%= locals.data[i].twitter %}">Twitter&nbsp;<i
+                                                class="material-icons small">open_in_new</i></a>
+                                    {% } %}
+                                    {% if (locals.data[i].anchorlink) { %}
+                                    <a target="_blank" href="{%= locals.data[i].anchorlink %}">AnchorLink&nbsp;<i
+                                                class="material-icons small">open_in_new</i></a>
+                                    {% } } %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% } %}
+                    {% } else { %}
+                    <p class="flow-text">There are no events at the moment! Please check back again later!</p>
+                    {% } %}
+                </div>
+            </div>
+
+        </main>
+        {% include components/footer.html %}
+    </body>
+</html>

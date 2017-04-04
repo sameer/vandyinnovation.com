@@ -1,0 +1,19 @@
+<header>
+    <nav class="navbar-material top-nav">
+        <div class="nav-wrapper blue-grey darken-3">
+            <a href="/" class="brand-logo hide-on-med-and-down">&nbsp;<span class="yellow-text text-darken-3">Vanderbilt</span> Medical Innovation Lab</a>
+            <a href="/" class="brand-logo hide-on-large-only">&nbsp;<span class="yellow-text text-darken-3">V</span>MIL</a>
+            <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                {% for navItem in navItems %}
+                    <li class="{% if (title is not null) and (navItem.title equals title)) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
+                {% endfor %}
+            </ul>
+            <ul class="side-nav" id="mobile-menu">
+                {% for navItem in navItems %}
+                    <li class="{% if (title is not null) and (navItem.title equals title)) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</header>

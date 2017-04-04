@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    {% include components/header.html %}
+    <body>
+        {% include components/navbar.html %}
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m12 l12"><h3 class="center-align">{%= locals.title %}</h3></div>
+                    <div class="col s12 m12 l12">
+                        {% if (locals.data && locals.data.length !== 0) { %}
+                        <div class="slider gallery">
+                            <ul class="slides">
+                                {% for (var i = 0; i < locals.data.length; i += 1) { %}
+                                <li class="hoverable">
+
+                                    <img class='responsive-img gallery-img' datasrc="{%= locals.data[i].src %}" alt="{%= locals.data[i].alt%}">
+                                    <!--<div class="caption center-align">-->
+                                        <!--<h5 class="light grey-text text-lighten-3">Caption!</h5>-->
+                                    <!--</div>-->
+                                </li>
+                                {% } %}
+                            </ul>
+                        </div>
+                        {% } else { %}
+                        <p class="flow-text">There are no pictures at the moment! Please check back again later!</p>
+                        {% } %}
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        {% include components/footer.html %}
+    </body>
+</html>

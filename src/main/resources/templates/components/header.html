@@ -1,0 +1,27 @@
+<head>
+    {% if title is not null %}
+    <title>VMIL | {{ title }}</title>
+    {% else %}
+    <title>VMIL</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/materialize.min.js"></script>
+    <link rel='stylesheet' href='/css/vmil.css'/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <script src="/js/vmil.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link href="/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="/css/twemoji.css" rel="stylesheet" type="text/css"/>
+    <meta name="description" content="{{ desc | default("VMIL: Vanderbilt Medical Innovation Lab") }}"/>
+    <!--  Android 5 Chrome Color-->
+    <meta name="theme-color" content="#5a5a50">
+</head>
