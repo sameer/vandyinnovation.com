@@ -9,7 +9,7 @@ import io.vertx.ext.web.handler.TemplateHandler;
 /**
  * Created by flyin on 4/1/2017.
  */
-public class RStatic extends RRoutes {
+public class RStatic extends IRoutes {
   private TemplateHandler templateHandler;
   public RStatic(Router router, TemplateHandler templateHandler) {
     super(router);
@@ -19,6 +19,7 @@ public class RStatic extends RRoutes {
   public void attach() {
     router.route("/favicon.ico").method(HttpMethod.GET).handler(FaviconHandler.create("webroot/favicon.ico"));
     router.route().method(HttpMethod.GET).handler(StaticHandler.create());
+
     router.route().method(HttpMethod.GET).handler(templateHandler);
 
 

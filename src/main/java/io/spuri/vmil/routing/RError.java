@@ -1,12 +1,11 @@
 package io.spuri.vmil.routing;
 
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.TemplateHandler;
 
 /**
  * Created by flyin on 4/1/2017.
  */
-public class RError extends RRoutes {
+public class RError extends IRoutes {
   public RError(Router router) {
     super(router);
   }

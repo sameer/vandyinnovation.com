@@ -1,5 +1,6 @@
 package io.spuri.vmil;
 
+import io.spuri.vmil.filesystem.FJson;
 import io.spuri.vmil.routing.RDynamic;
 import io.spuri.vmil.routing.RError;
 import io.spuri.vmil.routing.RStatic;
@@ -11,6 +12,9 @@ import io.vertx.ext.web.Router;
 public class Main extends AbstractVerticle {
   @Override
   public void start() {
+
+    FJson.readFiles(vertx);
+
     Router router = Router.router(vertx);
 
     TTmpls tTmpls = new TTmpls(vertx);

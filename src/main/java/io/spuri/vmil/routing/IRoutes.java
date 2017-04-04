@@ -5,10 +5,10 @@ import io.vertx.ext.web.Router;
 /**
  * Created by flyin on 4/1/2017.
  */
-public abstract class RRoutes {
+public abstract class IRoutes {
   protected Router router;
 
-  RRoutes(Router router) {
+  IRoutes(Router router) {
     this.router = router;
   }
 
