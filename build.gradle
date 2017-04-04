@@ -5,6 +5,7 @@ plugins {
 
 repositories {
   jcenter()
+  mavenCentral()
 }
 
 version = '1.0-SNAPSHOT'
@@ -20,6 +21,7 @@ dependencies {
   compile "io.vertx:vertx-core:$vertxVersion"
   compile "io.vertx:vertx-web:$vertxVersion"
   compile "io.vertx:vertx-web-templ-pebble:$vertxVersion"
+  compile "org.hjson:hjson:1.0.0"
   testCompile "junit:junit:4.12"
   testCompile "io.vertx:vertx-unit:$vertxVersion"
 }
