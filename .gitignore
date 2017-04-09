@@ -5,6 +5,7 @@ node_modules/
 .gradle
 build/
 src/main/resources/webroot/*
+src/main/resources/data/*
 # Ignore Gradle GUI config
 gradle-app.setting
 

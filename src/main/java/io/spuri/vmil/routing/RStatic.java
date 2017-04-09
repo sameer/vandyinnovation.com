@@ -10,7 +10,7 @@ import io.vertx.ext.web.handler.StaticHandler;
  */
 public class RStatic extends ARouting {
   public RStatic(Main main) {
-    super(main, "aboutUs.hjson");
+    super(main, "config.hjson");
   }
 
 

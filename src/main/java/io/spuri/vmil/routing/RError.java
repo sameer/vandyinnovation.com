@@ -1,6 +1,7 @@
 package io.spuri.vmil.routing;
 
 import io.spuri.vmil.Main;
+import io.spuri.vmil.constants.EventBusChannels;
 
 /**
  * Created by flyin on 4/1/2017.
@@ -14,7 +15,7 @@ public class RError extends ARouting {
   @Override
   public void createRoutes() {
     main.router.get().failureHandler(ctx -> {
-      main.getVertx().eventBus().publish("error", ctx.request().connection().remoteAddress().host() + " encountered a " + ctx.statusCode());
+      main.getVertx().eventBus().publish(EventBusChannels.ERROR_LOG, ctx.request().connection().remoteAddress().host() + " encountered a " + ctx.statusCode());
       if (ctx.statusCode() == 404) {
         ctx.put("message", "Page not found!");
         ctx.next();
