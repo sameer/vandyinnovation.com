@@ -10,8 +10,9 @@ public class RDynamic extends ARouting {
     super(main);
   }
 
+
   @Override
-  public void onReady() {
+  public void createRoutes() {
 
   }
 }

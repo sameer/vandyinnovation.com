@@ -9,13 +9,4 @@ public class ErrorLogger extends ALogger {
   public ErrorLogger(Main main) {
     super(main);
   }
-
-  @Override
-  public ErrorLogger register() {
-    main.getVertx().eventBus().consumer("error").handler(msg -> {
-      System.out.println("[ERROR]: " + msg.body());
-    });
-    return this;
-  }
-
 }

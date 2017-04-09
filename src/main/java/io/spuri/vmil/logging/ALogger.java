@@ -10,5 +10,11 @@ public abstract class ALogger {
   public ALogger(Main main) {
     this.main = main;
   }
-  public abstract ALogger register();
+  public ALogger register() {
+    String className = this.getClass().getSimpleName();
+    main.getVertx().eventBus().consumer(className + ".msg").handler(msg -> {
+      System.out.println("[" + className + "]: " + msg.body());
+    });
+    return this;
+  }
 }

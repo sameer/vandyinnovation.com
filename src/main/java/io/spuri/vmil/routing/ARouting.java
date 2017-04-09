@@ -2,42 +2,30 @@ package io.spuri.vmil.routing;
 
 import io.spuri.vmil.Main;
 import io.spuri.vmil.constants.EventBusChannels;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.Router;
+import io.spuri.vmil.filesystem.ARequiresFiles;
 
 /**
  * Created by flyin on 4/1/2017.
  */
-public abstract class ARouting {
-  protected Main main;
-  protected JsonObject data;
+public abstract class ARouting extends ARequiresFiles {
 
-  ARouting(Main main) {
-    this.main = main;
-    makeMessageConsumer();
+  protected ARouting(Main main, String ... requiredFiles) {
+    super(main, requiredFiles);
   }
 
-  /**
-   * Makes a MessageConsumer that receives JsonObject data for this router and notifies when ready
-   */
-  private void makeMessageConsumer() {
-    main.getVertx().eventBus().consumer(this.getClass().getSimpleName() + ".data").handler(data -> {
-      Object o = data.body();
-      if (o instanceof JsonObject) {
-        this.data = (JsonObject) o;
-        onReady(); // TODO - figure out how to avoid parallel calling by routing classes that messes up ordering
-        main.getVertx().eventBus().publish(EventBusChannels.ROUTING_READY, this.getClass().getSimpleName() + " routing is ready!");
-
-      } else {
-        main.getVertx().eventBus().publish("error", this.getClass().getSimpleName() + " received non JsonObject data!");
-      }
-    });
+  @Override
+  public void onLoad() {
+    if (data.size() == 0) {
+      main.getVertx().eventBus().publish(EventBusChannels.ROUTING_LOADED,
+        this.getClass().getSimpleName() + " routing w/o data loaded");
+    } else {
+      main.getVertx().eventBus().publish(EventBusChannels.ROUTING_LOADED,
+        this.getClass().getSimpleName() + " routing with data loaded");
+    }
   }
-
   /**
-   * Behavior that is run when the object is ready to implement its routing behavior.
+   * Executes route creation behavior of the routing class. Should only be called after onLoad() succeeds.
+   * Client is expected to call this to properly determine route priority.
    */
-  protected abstract void onReady();
-
+  public abstract void createRoutes();
 }

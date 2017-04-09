@@ -10,14 +10,15 @@ public class RError extends ARouting {
     super(main);
   }
 
+
   @Override
-  public void onReady() {
+  public void createRoutes() {
     main.router.get().failureHandler(ctx -> {
       main.getVertx().eventBus().publish("error", ctx.request().connection().remoteAddress().host() + " encountered a " + ctx.statusCode());
       if (ctx.statusCode() == 404) {
         ctx.put("message", "Page not found!");
         ctx.next();
-//        ctx.reroute("/static.html");
+//        ctx.reroute("/RStatic.html");
 //        ctx.response().end("Page not found!");
       } else if(ctx.statusCode() == 500) {
         // TODO make 500 page ctx.reroute("/internal-error.html");

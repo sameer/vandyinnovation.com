@@ -10,12 +10,12 @@ import io.vertx.ext.web.handler.StaticHandler;
  */
 public class RStatic extends ARouting {
   public RStatic(Main main) {
-    super(main);
+    super(main, "aboutUs.hjson");
   }
 
-  @Override
-  public void onReady() {
 
+  @Override
+  public void createRoutes() {
     main.router.route("/favicon.ico").method(HttpMethod.GET).handler(FaviconHandler.create("webroot/favicon.ico"));
     main.router.route("/blub").handler(ctx -> {
       ctx.response().end("blub back at ya");
