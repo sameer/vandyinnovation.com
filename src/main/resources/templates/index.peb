@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-    {% include components/header.html %}
+    {% include components/header.peb %}
     <body>
-        {% include components/navbar.html %}
+        {% include components/navbar.peb %}
         <main>
             <div class="container">
                 <hr/>
@@ -37,6 +37,6 @@
                 </div>
             </div>
         </main>
-        {% include components/footer.html %}
+        {% include components/footer.peb %}
     </body>
 </html>

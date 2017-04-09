@@ -6,12 +6,12 @@
             <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 {% for navItem in navItems %}
-                    <li class="{% if (title is not null) and (navItem.title equals title)) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
+                    <li class="{% if (title is not null) and (navItem.title equals title) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
                 {% endfor %}
             </ul>
             <ul class="side-nav" id="mobile-menu">
                 {% for navItem in navItems %}
-                    <li class="{% if (title is not null) and (navItem.title equals title)) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
+                    <li class="{% if (title is not null) and (navItem.title equals title) %}{{"active"}}{% endif %}"><a href="/{{ navItem.link }}">{{ navItem.title }}</a></li>
                 {% endfor %}
             </ul>
         </div>
