@@ -36,7 +36,14 @@ shadowJar {
   }
 }
 
+task formatCode(type:Exec) {
+  workingDir '.'
+  commandLine './clang-format.sh'
+}
+
+
 run {
+  tasks.formatCode.execute()
   args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
 }
 
