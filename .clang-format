@@ -1,0 +1,6 @@
+BasedOnStyle: google
+---
+Language: Java
+ColumnLimit: 100
+IndentWidth: 2
+---

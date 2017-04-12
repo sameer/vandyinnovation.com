@@ -17,38 +17,38 @@ import java.util.List;
  */
 public class FileLoader extends AbstractVerticle {
   private List<ARequiresFiles> requesters = new ArrayList<>();
-  public FileLoader(ARequiresFiles ... args) {
+  public FileLoader(ARequiresFiles... args) {
     requesters = Arrays.asList(args);
   }
 
   @Override
   public void start() {
-    requesters.forEach(requester -> {
+    requesters.forEach((ARequiresFiles requester) -> {
       String className = requester.getClass().getSimpleName();
       requester.getRequiredFiles().forEach(fileStr -> {
-        vertx.eventBus().publish(EventBusChannels.INFO_LOG, "Loading " + fileStr + " requested by " + className);
-        vertx.fileSystem().readFile("data/" + className + "/" + fileStr, new Handler<AsyncResult<Buffer>>() {
-          @Override
-          public void handle(AsyncResult<Buffer> asyncResult) {
-            if (asyncResult.failed()) {
-              vertx.eventBus().publish(EventBusChannels.ERROR_LOG, "Failed to load " + fileStr);
-            } else {
-              Object data = null;
-              try {
-                if (fileStr.endsWith(".hjson")) {
-                  data = new JsonObject(JsonValue.readHjson(asyncResult.result().toString()).toString());
-                } else if (fileStr.endsWith(".json")) {
-                  data = asyncResult.result().toJsonObject();
-                } else
-                  data = asyncResult.result().toString();
-              } catch(Throwable t) {
-                vertx.eventBus().publish(EventBusChannels.ERROR_LOG, "Failed to load file " + fileStr);
-                t.printStackTrace();
-
-              }
-              vertx.eventBus().publish(className + "." + fileStr, data);
+        vertx.eventBus().publish(
+            EventBusChannels.INFO_LOG, "Loading " + fileStr + " requested by " + className);
+        vertx.fileSystem().readFile("data/" + className + "/" + fileStr, asyncResult -> {
+          if (asyncResult.failed()) {
+            vertx.eventBus().publish(EventBusChannels.ERROR_LOG, "Failed to load " + fileStr);
+          } else {
+            Object data = null;
+            try {
+              if (fileStr.endsWith(".hjson")) {
+                data =
+                    new JsonObject(JsonValue.readHjson(asyncResult.result().toString()).toString());
+              } else if (fileStr.endsWith(".json")) {
+                data = asyncResult.result().toJsonObject();
+              } else
+                data = asyncResult.result().toString();
+            } catch (Throwable t) {
+              vertx.eventBus().publish(
+                  EventBusChannels.ERROR_LOG, "Failed to load file " + fileStr);
+              t.printStackTrace();
             }
+            vertx.eventBus().publish(className + "." + fileStr, data);
           }
+
         });
 
       });

@@ -18,11 +18,12 @@ public class RStatic extends ARouting {
     super(main, "config.hjson");
   }
 
-
   @Override
   public void createRoutes() {
-    main.router.route("/favicon.ico").method(HttpMethod.GET).handler(FaviconHandler.create("webroot/favicon.ico"));
-    //main.router.route().method(HttpMethod.GET).handler(main.tTmpls.getHandler().handle);
+    main.router.route("/favicon.ico")
+        .method(HttpMethod.GET)
+        .handler(FaviconHandler.create("webroot/favicon.ico"));
+    // main.router.route().method(HttpMethod.GET).handler(main.tTmpls.getHandler().handle);
 
     JsonObject config = (JsonObject) data.get("config.hjson");
 
@@ -31,30 +32,31 @@ public class RStatic extends ARouting {
     config.getJsonArray("pages").forEach(jobj -> {
       JsonObject page = (JsonObject) jobj;
       main.router.route(page.getString("path")).method(HttpMethod.GET).handler(ctx -> {
-        main.getVertx().fileSystem().readFile("data/RStatic/" + page.getString("file"), asyncResult -> {
-          if (asyncResult.succeeded()) {
-            JsonObject jsonObject = new JsonObject(JsonValue.readHjson(asyncResult.result().toString()).toString());
-            for(Map.Entry<String, Object> entry : jsonObject.getMap().entrySet()) {
-              ctx.put(entry.getKey(), entry.getValue().toString());
-            }
-            main.tTmpls.getEngine().render(ctx, "templates/static.peb", res -> {
-              if (res.succeeded()) {
-                ctx.response().end(res.result());
+        main.getVertx().fileSystem().readFile(
+            "data/RStatic/" + page.getString("file"), asyncResult -> {
+              if (asyncResult.succeeded()) {
+                JsonObject jsonObject =
+                    new JsonObject(JsonValue.readHjson(asyncResult.result().toString()).toString());
+                for (Map.Entry<String, Object> entry : jsonObject.getMap().entrySet()) {
+                  ctx.put(entry.getKey(), entry.getValue().toString());
+                }
+                main.tTmpls.getEngine().render(ctx, "templates/static.peb", res -> {
+                  if (res.succeeded()) {
+                    ctx.response().end(res.result());
+                  } else {
+                    ctx.fail(res.cause());
+                  }
+                });
               } else {
-                ctx.fail(res.cause());
+                main.getVertx().eventBus().publish(EventBusChannels.ERROR_LOG,
+                    "Failed to load data from " + page.getString("file"));
+                ctx.fail(500);
               }
             });
-          } else {
-            main.getVertx().eventBus().publish(EventBusChannels.ERROR_LOG, "Failed to load data from " + page.getString("file"));
-            ctx.fail(500);
-          }
-        });
 
       });
     });
-    main.router.route("/blub").handler(ctx -> {
-      ctx.response().end("blub back at ya");
-    });
+    main.router.route("/blub").handler(ctx -> { ctx.response().end("blub back at ya"); });
 
     // Static Resources should be considered last
     main.router.route().method(HttpMethod.GET).handler(StaticHandler.create());

@@ -48,14 +48,8 @@ public class Main extends AbstractVerticle {
       }
     });
 
-    routesList = Arrays.asList(
-      new RStatic(this),
-      new RDynamic(this),
-      new RError(this)
-    );
+    routesList = Arrays.asList(new RStatic(this), new RDynamic(this), new RError(this));
 
-    vertx.deployVerticle(new FileLoader((ARequiresFiles[])routesList.toArray()));
-
+    vertx.deployVerticle(new FileLoader((ARequiresFiles[]) routesList.toArray()));
   }
-
 }

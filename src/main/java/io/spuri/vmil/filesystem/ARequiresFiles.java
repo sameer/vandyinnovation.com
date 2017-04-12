@@ -13,7 +13,7 @@ public abstract class ARequiresFiles {
   protected Main main;
   protected HashMap<String, Object> data = new HashMap<>();
   private int filesLeft;
-  protected ARequiresFiles(Main main, String ... requiredFiles) {
+  protected ARequiresFiles(Main main, String... requiredFiles) {
     this.main = main;
     if (requiredFiles.length == 0) {
       onLoad();
@@ -38,7 +38,7 @@ public abstract class ARequiresFiles {
   /**
    * Behavior that is run when data has been fully loaded
    * This will be executed during object construction if no files are required.
-   * That means that parameters passed to the constructors of subclasses will not be available!
+   * NOTE: means that parameters passed to the constructors of subclasses might not be available!
    */
   protected abstract void onLoad();
 
