@@ -11,7 +11,11 @@ public class Main extends AbstractVerticle {
   public void start() throws Exception {
     vTemplating = new VTemplating(vertx);
     router = Router.router(vertx);
-    for (RouteMaker rm : vroutes) {
+
+    for (RouteMaker rm : dynamicroutes) {
+      rm.make(this);
+    }
+    for (RouteMaker rm : VRoutes.addstaticroutes(this)) {
       rm.make(this);
     }
     vertx.createHttpServer().requestHandler(router::accept).listen(8080);
