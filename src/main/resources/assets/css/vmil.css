@@ -19,8 +19,8 @@ main {
   height: 64px;
 }
 
-i.material-icons {
-  vertical-align: text-top;
+i.material-icons i.mdi {
+  vertical-align: middle;
 }
 
 .brand-logo {
