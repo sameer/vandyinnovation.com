@@ -30,7 +30,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-
 public class GoogleHandler implements Handler<RoutingContext> {
   private static final String APPLICATION_NAME = "VandyInnovation";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -48,7 +47,6 @@ public class GoogleHandler implements Handler<RoutingContext> {
   private final String FOLDER_NAME;
   public Map<String, File> files = new HashMap<>();
   private boolean initFailed;
-
 
   private GoogleHandler(Vertx vertx, String folderName) {
     this.FOLDER_NAME = folderName;
@@ -93,13 +91,22 @@ public class GoogleHandler implements Handler<RoutingContext> {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
 
-        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-          new InputStreamReader(GoogleHandler.class.getResourceAsStream("/data/client_secrets.json")));
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-          httpTransport, JSON_FACTORY, googleClientSecrets,
-          Collections.singleton(DriveScopes.DRIVE_READONLY)).setDataStoreFactory(dataStoreFactory).setAccessType("offline").setApprovalPrompt("auto").build();
-        credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("me");
-        drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
+        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(
+            JSON_FACTORY, new InputStreamReader(GoogleHandler.class.getResourceAsStream(
+                              "/data/client_secrets.json")));
+        GoogleAuthorizationCodeFlow flow =
+            new GoogleAuthorizationCodeFlow
+                .Builder(httpTransport, JSON_FACTORY, googleClientSecrets,
+                    Collections.singleton(DriveScopes.DRIVE_READONLY))
+                .setDataStoreFactory(dataStoreFactory)
+                .setAccessType("offline")
+                .setApprovalPrompt("auto")
+                .build();
+        credential =
+            new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("me");
+        drive = new Drive.Builder(httpTransport, JSON_FACTORY, credential)
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
         staticInit = true;
       }
     } catch (GoogleJsonResponseException e) {
@@ -132,7 +139,7 @@ public class GoogleHandler implements Handler<RoutingContext> {
         File toSend;
         if ("/".equals(path)) {
           ctx.next();
-        } else if ((toSend = files.get(path)) != null){
+        } else if ((toSend = files.get(path)) != null) {
           try {
             fileCache.computeIfAbsent(toSend.getId(), id -> {
               Buffer buffer = Buffer.buffer();
@@ -159,5 +166,4 @@ public class GoogleHandler implements Handler<RoutingContext> {
       ctx.next();
     }
   }
-
 }

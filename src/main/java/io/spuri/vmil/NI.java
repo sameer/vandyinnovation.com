@@ -50,4 +50,3 @@ public class NI implements Comparable<NI> {
 interface NIModifier {
   NI modify(NI ni);
 }
-
