@@ -28,10 +28,7 @@ import io.vertx.ext.web.impl.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class GoogleHandler implements Handler<RoutingContext> {
@@ -114,6 +111,9 @@ public class GoogleHandler implements Handler<RoutingContext> {
 
     return new GoogleHandler(vertx, folderName);
   }
+  private LinkedHashMap<String, Buffer> fileCache = new LinkedHashMap<>();
+
+  // TODO: implement cache evicting
 
   @Override
   public void handle(RoutingContext ctx) {
@@ -134,9 +134,19 @@ public class GoogleHandler implements Handler<RoutingContext> {
           ctx.next();
         } else if ((toSend = files.get(path)) != null){
           try {
-            ByteArrayOutputStream file = new ByteArrayOutputStream();
-            drive.files().get(toSend.getId()).executeMediaAndDownloadTo(file);
-            ctx.response().end(Buffer.buffer().appendBytes(file.toByteArray()));
+            fileCache.computeIfAbsent(toSend.getId(), id -> {
+              Buffer buffer = Buffer.buffer();
+              try {
+                ByteArrayOutputStream file = new ByteArrayOutputStream();
+                drive.files().get(toSend.getId()).executeMediaAndDownloadTo(file);
+                buffer.appendBytes(file.toByteArray());
+              } catch (Exception e) {
+                logger.error("Failed to fetch link for file " + toSend.getName(), e);
+              }
+              return buffer;
+            });
+
+            ctx.response().end(fileCache.get(toSend.getId()));
           } catch (Exception e) {
             logger.error("Failed to fetch link for file " + toSend.getName(), e);
             ctx.response().end();
