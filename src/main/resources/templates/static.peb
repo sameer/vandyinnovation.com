@@ -5,32 +5,11 @@
         {% include "components/navbar.peb" %}
         <main>
             <div class="container">
-                <div class="col s12 m12 l12"><h3 class="center-align">{{ title | slice(6, title|length) }}</h3></div>
-                {% if context.get("text") is not null %}
                 <div class="row">
-                    <div class="col s12 m12 l12 blue-grey-text text-darken-3">
-                        <p class="flow-text">{{ context.get("text") | raw }}</p>
+                    <div class="col s12 m12 l12 blue-grey-text text-darken-3 markdown-text">
+                      {{ context.get("text")}}
                     </div>
                 </div>
-                {% endif %}
-                {% if html is not null %}
-                {{html | raw }}
-                {% endif %}
-                {% if (img is not null) and (img.src is not null) %}
-                <div class="row">
-                    <div class="col s12 m12 l12 center">
-                        <img class="vmil-img responsive-img hoverable" src="/img/{{ img.src }}"
-                             alt="{% if img.alt is not null %} {{ img.alt }}{% endif %}"/>
-                    </div>
-                </div>
-                {% endif %}
-                {% if emoji is not null %}
-                <div class="row">
-                    <div class="col s12 m12 l12 center">
-                        <i class="twa twa-5x twa-{{ emoji }}"></i>
-                    </div>
-                </div>
-                {% endif %}
             </div>
 
         </main>

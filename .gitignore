@@ -1,13 +1,22 @@
+.classpath
+.project
+.settings
+.vscode/
+bin
 node_modules/
 *secret*
 .vertx/
 .idea/
 .gradle
 build/
-src/main/resources/webroot/*
+src/main/resources/assets/*
 src/main/resources/data/*
 # Ignore Gradle GUI config
 gradle-app.setting
+
+vandyinnovation.com.iml
+vandyinnovation.com.ipr
+vandyinnovation.com.iws
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar

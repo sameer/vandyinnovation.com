@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-    {% include components/header.peb %}
+    {% include "components/header.peb" %}
     <body>
-        {% include components/navbar.peb %}
+        {% include "components/navbar.peb" %}
         <main>
             <div class="container">
                 <hr/>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <div class="col s12 m12 l6 center">
-                        <img class="vmil-img responsive-img hoverable" src="/img/framework.png"
+                        <img class="vmil-img responsive-img hoverable" src="/assets/img/framework.png"
                              alt="VMIL Framework"/>
                     </div>
                     <div class="col l6 right-align hide-on-med-and-down">
@@ -37,6 +37,6 @@
                 </div>
             </div>
         </main>
-        {% include components/footer.peb %}
+        {% include "components/footer.peb" %}
     </body>
 </html>

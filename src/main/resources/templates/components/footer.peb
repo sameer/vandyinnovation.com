@@ -19,9 +19,13 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            &copy; 2016 SP
+            &copy; 2016-2017 SP
             <a class="grey-text text-lighten-4 right"
                href="https://anchorlink.vanderbilt.edu/organization/medicalinnovationlab">VMIL on AnchorLink</a>
         </div>
     </div>
 </footer>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+<script src="/assets/js/vmil.js"></script>

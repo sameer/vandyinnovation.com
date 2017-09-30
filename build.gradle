@@ -1,6 +1,8 @@
+
 plugins {
   id 'application'
   id 'com.github.johnrengelman.shadow' version '1.2.3'
+  id 'idea'
 }
 
 repositories {
@@ -12,16 +14,21 @@ version = '1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 mainClassName = 'io.vertx.core.Launcher'
 
-def vertxVersion = '3.4.1'
+def vertxVersion = '3.4.2'
 def mainVerticleName = 'io.spuri.vmil.Main'
 def watchForChange = 'src/**/*'
 def doOnChange = './gradlew classes'
 
 dependencies {
+  compile "joda-time:joda-time:2.9.9"
+  compile "commons-validator:commons-validator:1.6"
   compile "io.vertx:vertx-core:$vertxVersion"
   compile "io.vertx:vertx-web:$vertxVersion"
   compile "io.vertx:vertx-web-templ-pebble:$vertxVersion"
-  compile "org.hjson:hjson:1.0.0"
+  compile "io.vertx:vertx-auth-oauth2:$vertxVersion"
+  compile 'com.google.api-client:google-api-client:1.22.0'
+  compile 'com.google.oauth-client:google-oauth-client-jetty:1.22.0'
+  compile 'com.google.apis:google-api-services-drive:v3-rev83-1.22.0'
   testCompile "junit:junit:4.12"
   testCompile "io.vertx:vertx-unit:$vertxVersion"
 }
@@ -43,7 +50,7 @@ task formatCode(type:Exec) {
 
 
 run {
-  tasks.formatCode.execute()
+//  tasks.formatCode.execute()
   args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
 }
 

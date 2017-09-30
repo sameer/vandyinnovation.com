@@ -1,0 +1,37 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;
+  /* Materialize CSS
+  Code to stickify footer.
+  */
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Ensure logo fits within navbar */
+.navbar-material .nav-wrapper .brand-logo img {
+  height: 64px;
+}
+
+i.material-icons {
+  vertical-align: text-top;
+}
+
+.brand-logo {
+  font-weight: 700;
+
+}
+
+li {
+  list-style-type: disc;
+}
+
+.markdown-text {
+  display: none;
+}

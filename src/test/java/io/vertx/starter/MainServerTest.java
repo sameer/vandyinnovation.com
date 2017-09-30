@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public class MainTest {
+public class MainServerTest {
 
   private Vertx vertx;
 
@@ -29,7 +29,7 @@ public class MainTest {
   @Test
   public void testThatTheServerIsStarted(TestContext tc) {
     Async async = tc.async();
-    vertx.createHttpClient().getNow(8080, "localhost", "/", response -> {
+    vertx.createHttpClient().getNow(8085, "localhost", "/", response -> {
       tc.assertEquals(response.statusCode(), 200);
       response.bodyHandler(body -> {
         tc.assertTrue(body.length() > 0);
