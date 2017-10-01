@@ -12,13 +12,13 @@
     <meta name="description" content="{{ desc | default("VMIL: Vanderbilt Medical Innovation Lab") }}"/>
     <!--  Android 5+ Chrome Tab Color-->
     <meta name="theme-color" content="#5a5a50">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700bold">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/css/materialize.min.css">
-    <link rel='stylesheet' href='/assets/css/vmil.css'/>
+    <link rel="stylesheet" href="/assets/materialize.min.css">
+    <link rel='stylesheet' href='/assets/vmil.css'/>
 
 </head>

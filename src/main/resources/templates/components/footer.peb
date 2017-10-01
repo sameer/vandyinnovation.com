@@ -28,4 +28,4 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
-<script src="/assets/js/vmil.js"></script>
+<script src="/assets/vmil.js"></script>
