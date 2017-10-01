@@ -22,8 +22,13 @@ public class Main extends AbstractVerticle {
     for (RouteMaker rm : VRoutes.addstaticroutes(this)) {
       rm.make(this);
     }
-    vertx.createHttpServer(
-      new HttpServerOptions().setSsl(true).setPemKeyCertOptions(new PemKeyCertOptions().addKeyPath(System.getProperty("vertx.key")).addCertPath(System.getProperty("vertx.cert"))))
-      .requestHandler(router::accept).listen(Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
+    vertx
+        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(
+            new PemKeyCertOptions()
+                .addKeyPath(System.getProperty("vertx.key"))
+                .addCertPath(System.getProperty("vertx.cert"))))
+        .requestHandler(router::accept)
+        .listen(
+            Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
   }
 }

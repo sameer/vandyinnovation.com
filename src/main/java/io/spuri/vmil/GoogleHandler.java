@@ -23,12 +23,14 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.impl.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GoogleHandler implements Handler<RoutingContext> {
   private static final String APPLICATION_NAME = "VandyInnovation";
@@ -47,6 +49,7 @@ public class GoogleHandler implements Handler<RoutingContext> {
   private final String FOLDER_NAME;
   public Map<String, File> files = new HashMap<>();
   private boolean initFailed;
+  private LinkedHashMap<String, Buffer> fileCache = new LinkedHashMap<>();
 
   private GoogleHandler(Vertx vertx, String folderName) {
     this.FOLDER_NAME = folderName;
@@ -91,9 +94,9 @@ public class GoogleHandler implements Handler<RoutingContext> {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
 
-        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(
-            JSON_FACTORY, new InputStreamReader(GoogleHandler.class.getResourceAsStream(
-                              "/data/client_secrets.json")));
+        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+            new InputStreamReader(
+                GoogleHandler.class.getResourceAsStream("/data/client_secrets.json")));
         GoogleAuthorizationCodeFlow flow =
             new GoogleAuthorizationCodeFlow
                 .Builder(httpTransport, JSON_FACTORY, googleClientSecrets,
@@ -118,7 +121,6 @@ public class GoogleHandler implements Handler<RoutingContext> {
 
     return new GoogleHandler(vertx, folderName);
   }
-  private LinkedHashMap<String, Buffer> fileCache = new LinkedHashMap<>();
 
   // TODO: implement cache evicting
 

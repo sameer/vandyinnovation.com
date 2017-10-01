@@ -1,7 +1,6 @@
 package io.spuri.vmil;
 
 import java.util.PriorityQueue;
-import java.util.function.Function;
 
 public class NI implements Comparable<NI> {
   public static NIModifier identity() {
@@ -37,7 +36,7 @@ public class NI implements Comparable<NI> {
     return this;
   }
 
-  public static NI navItem() {
+  public static NI create() {
     return new NI();
   }
 

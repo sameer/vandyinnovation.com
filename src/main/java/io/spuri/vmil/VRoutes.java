@@ -15,15 +15,16 @@ public class VRoutes {
   private static Map<String, RouteMaker> staticPaths = new HashMap<>();
 
   static {
-    dynamicroutes.addAll(
-      Arrays.asList(
-        (Main m) -> m.router.route("/assets/sponsors/*").handler(GoogleHandler.create(m.getVertx(), "Sponsors")),
-        (Main m) -> m.router.route("/assets/*")
-          .handler(GoogleHandler.create(m.getVertx(), "Assets")),
+    dynamicroutes.addAll(Arrays.asList(
         (Main m)
-          -> m.router.route("/favicon.ico")
-          .method(HttpMethod.GET)
-          .handler(FaviconHandler.create("assets/favicon.ico")),
+            -> m.router.route("/assets/sponsors/*")
+                   .handler(GoogleHandler.create(m.getVertx(), "Sponsors")),
+        (Main m)
+            -> m.router.route("/assets/*").handler(GoogleHandler.create(m.getVertx(), "Assets")),
+        (Main m)
+            -> m.router.route("/favicon.ico")
+                   .method(HttpMethod.GET)
+                   .handler(FaviconHandler.create("assets/favicon.ico")),
         (Main m) -> m.router.route("/").method(HttpMethod.GET).handler(ctx -> {
           ctx.put("desc", "VMIL Homepage");
           ctx.put("navItems", navItems);
@@ -34,8 +35,12 @@ public class VRoutes {
               ctx.fail(result.cause());
             }
           });
-        })
-      ));
+        })));
+
+    navItems.add(
+        NI.create()
+            .link("https://anchorlink.vanderbilt.edu/organization/medicalinnovationlab/events")
+            .title("Events"));
   }
 
   static List<RouteMaker> addstaticroutes(Main m) {
@@ -47,7 +52,7 @@ public class VRoutes {
       String pageName = f.getName().substring(0, f.getName().lastIndexOf('.'));
       logger.info("Adding path for " + pageName);
       staticroutes.add(rmstatic("/" + pageName.replace(' ', '_'), f.getName(), pageName,
-        "VMIL: " + pageName, NI.identity()));
+          "VMIL: " + pageName, NI.identity()));
     }
     staticroutes.add((Main m2) -> m2.router.route().handler(ctx -> {
       ctx.response().putHeader("content-type", "text/html").end("hihihi");
@@ -56,12 +61,12 @@ public class VRoutes {
   }
 
   private static RouteMaker rmstatic(
-    String path, String markupFile, String title, String description, NIModifier niModifier) {
+      String path, String markupFile, String title, String description, NIModifier niModifier) {
     if (staticPaths.containsKey(path)) {
       return (Main m) -> null; // This looks horrible but please bear with me for now
     } else {
       RouteMaker rm = (Main m) -> {
-        navItems.add(niModifier.modify(NI.navItem().link(path).title(title)));
+        navItems.add(niModifier.modify(NI.create().link(path).title(title)));
         return m.router.route(path).method(HttpMethod.GET).handler(ctx -> {
           ctx.put("title", title);
           ctx.put("desc", description);

@@ -5,6 +5,7 @@ import io.vertx.ext.web.templ.PebbleTemplateEngine;
 
 public class VTemplating {
   public PebbleTemplateEngine templateEngine;
+
   public VTemplating(Vertx v) {
     templateEngine = PebbleTemplateEngine.create(v);
   }
