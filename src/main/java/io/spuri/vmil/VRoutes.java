@@ -16,8 +16,9 @@ public class VRoutes {
 
   static {
     dynamicroutes.addAll(
-      Arrays.asList((Main m)
-          -> m.router.route("/assets/*")
+      Arrays.asList(
+        (Main m) -> m.router.route("/assets/sponsors/*").handler(GoogleHandler.create(m.getVertx(), "Sponsors")),
+        (Main m) -> m.router.route("/assets/*")
           .handler(GoogleHandler.create(m.getVertx(), "Assets")),
         (Main m)
           -> m.router.route("/favicon.ico")
