@@ -1,8 +1,11 @@
 package io.spuri.vmil;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class NI implements Comparable<NI> {
+
   public static NIModifier identity() {
     return (NI ni) -> ni;
   }
@@ -10,7 +13,7 @@ public class NI implements Comparable<NI> {
   public String title, link;
   public int priority;
   public NI parent = null;
-  public PriorityQueue<NI> children = new PriorityQueue<>();
+  public List<NI> children = new LinkedList<>();
 
   public NI title(String title) {
     this.title = title;
@@ -43,6 +46,11 @@ public class NI implements Comparable<NI> {
   @Override
   public int compareTo(NI navItem) {
     return this.priority - navItem.priority;
+  }
+
+  @Override
+  public String toString() {
+    return "[" + title + "," + link +"," + priority + "," + parent + "]";
   }
 }
 @FunctionalInterface

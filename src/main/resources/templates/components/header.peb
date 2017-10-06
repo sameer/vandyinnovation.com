@@ -1,6 +1,6 @@
 <head>
-    {% if title is not null %}
-    <title>VMIL | {{ title }}</title>
+    {% if context.get("title") is not null %}
+    <title>{{ context.get("title") }} | VMIL</title>
     {% else %}
     <title>VMIL</title>
     {% endif %}
@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="msapplication-tap-highlight" content="no">
 
-    <meta name="description" content="{{ desc | default("VMIL: Vanderbilt Medical Innovation Lab") }}"/>
+    <meta name="description" content="{{ context.get("desc") | default("VMIL: Vanderbilt Medical Innovation Lab") }}"/>
     <!--  Android 5+ Chrome Tab Color-->
     <meta name="theme-color" content="#5a5a50">
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">

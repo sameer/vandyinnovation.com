@@ -15,6 +15,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.mitchellbosecke.pebble.utils.Pair;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -26,13 +27,12 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.impl.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GoogleHandler implements Handler<RoutingContext> {
+  private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
   private static final String APPLICATION_NAME = "VandyInnovation";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final String TEMP_DIR = System.getProperty("java.io.tmpdir") + "/vandyinnovation";
@@ -47,7 +47,8 @@ public class GoogleHandler implements Handler<RoutingContext> {
   private static boolean staticInitFailed;
   private final String THIS_TEMP_DIR;
   private final String FOLDER_NAME;
-  public Map<String, File> files = new HashMap<>();
+  public GoogleDriveFileTreeNode rootTreeNode;
+  public Map<String, File> filePathToGoogleFile = new HashMap<>();
   private boolean initFailed;
   private LinkedHashMap<String, Buffer> fileCache = new LinkedHashMap<>();
 
@@ -58,23 +59,45 @@ public class GoogleHandler implements Handler<RoutingContext> {
       try {
         Drive.Files.List req = drive.files().list();
         req.setCorpus("user");
-        req.setQ("mimeType = 'application/vnd.google-apps.folder' and name = '" + folderName + "'");
+        req.setQ("mimeType = '"+ FOLDER_MIME_TYPE +"' and name = '" + folderName + "'");
         FileList fileList = req.execute();
         File folder = fileList.getFiles().get(0);
-        req = drive.files().list();
-        req.setCorpus("user");
-        req.setQ("'" + folder.getId() + "' in parents");
-        FileList folderFileList = req.execute();
-        for (File f : folderFileList.getFiles()) {
-          logger.info("Adding file " + f.getName());
-          files.put(f.getName(), f);
-        }
+        rootTreeNode = new GoogleDriveFileTreeNode();
+        rootTreeNode.data = new Pair<>("/", folder);
+        rootTreeNode.children = new LinkedList<>();
+        traverseGoogleDriveTree(rootTreeNode);
       } catch (Exception e) {
         logger.fatal("GoogleHandler init failed", e);
         initFailed = true;
       }
     } else {
       initFailed = true;
+    }
+  }
+
+  private void traverseGoogleDriveTree(GoogleDriveFileTreeNode myNode) throws IOException {
+
+    Drive.Files.List req = drive.files().list();
+    req.setCorpus("user");
+    req.setQ("'" + myNode.data.getRight().getId() + "' in parents");
+    FileList folderFileList = req.execute();
+
+    for (File f : folderFileList.getFiles()) {
+      GoogleDriveFileTreeNode childNode = new GoogleDriveFileTreeNode();
+      childNode.children = new LinkedList<>(); // Never want to encounter a node with null children
+
+      myNode.children.add(childNode);
+
+      if (f.getMimeType().equals(FOLDER_MIME_TYPE)) {
+        childNode.data = new Pair<>(myNode.data.getLeft() + f.getName() + "/", f);
+        logger.info("Searching through folder " + childNode.data.getLeft());
+        traverseGoogleDriveTree(childNode);
+        filePathToGoogleFile.put(VUtils.googleMarkAsDir(childNode.data.getLeft()), f);
+      } else {
+        childNode.data = new Pair<>(myNode.data.getLeft() + f.getName(), f);
+        logger.info("Adding file " + childNode.data.getLeft());
+        filePathToGoogleFile.put(childNode.data.getLeft(), f);
+      }
     }
   }
 
@@ -122,6 +145,13 @@ public class GoogleHandler implements Handler<RoutingContext> {
     return new GoogleHandler(vertx, folderName);
   }
 
+  private String contextPath = "";
+
+  public GoogleHandler setPath(String path) {
+    this.contextPath = path;
+    return this;
+  }
+
   // TODO: implement cache evicting
 
   @Override
@@ -130,18 +160,22 @@ public class GoogleHandler implements Handler<RoutingContext> {
       HttpServerRequest req = ctx.request();
       if (req.method() == HttpMethod.GET || req.method() == HttpMethod.HEAD) {
         String path = Utils.removeDots(Utils.urlDecode(ctx.normalisedPath(), false));
-        logger.info("Request is " + path);
+        logger.info("Original request is " + path);
         if (path == null) {
           logger.warn("Invalid path: " + ctx.request().path());
           ctx.next();
           return;
         }
-        path = path.substring(path.lastIndexOf('/') + 1);
+        if (contextPath.length() > 0)
+          path = path.substring(path.lastIndexOf(contextPath) + contextPath.length());
         logger.info("Looking for " + path);
+        if (!path.startsWith("/")) {
+          path = "/" + path;
+        }
         File toSend;
         if ("/".equals(path)) {
           ctx.next();
-        } else if ((toSend = files.get(path)) != null) {
+        } else if ((toSend = filePathToGoogleFile.get(path)) != null) {
           try {
             fileCache.computeIfAbsent(toSend.getId(), id -> {
               Buffer buffer = Buffer.buffer();
@@ -154,7 +188,7 @@ public class GoogleHandler implements Handler<RoutingContext> {
               }
               return buffer;
             });
-
+            ctx.response().putHeader("content-type", toSend.getMimeType());
             ctx.response().end(fileCache.get(toSend.getId()));
           } catch (Exception e) {
             logger.error("Failed to fetch link for file " + toSend.getName(), e);
@@ -162,10 +196,15 @@ public class GoogleHandler implements Handler<RoutingContext> {
           }
         } else {
           logger.info("Couldn't find " + path);
+          ctx.next();
         }
       }
     } else {
       ctx.next();
     }
+  }
+  class GoogleDriveFileTreeNode {
+    Pair<String, File> data;
+    List<GoogleDriveFileTreeNode> children;
   }
 }

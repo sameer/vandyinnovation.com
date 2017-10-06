@@ -6,9 +6,16 @@
         <main>
             <div class="container">
                 <div class="row">
+                    {% if context.get("myNavItem") is not null and not context.get("myNavItem").children.isEmpty() %}
+                      <div id="main" class="col s12 markdown-text" style="display:none;">{{ context.get("text") }}</div>
+                      {% for childNavItem in context.get("myNavItem").children %}
+                        <div id="{{ childNavItem.title.replaceAll(" ", "_") }}" class="col s12 markdown-text-leave-alone">/pages{{ childNavItem.link }}</div>
+                      {% endfor %}
+                    {% else %}
                     <div class="col s12 m12 l12 blue-grey-text text-darken-3 markdown-text">
                       {{ context.get("text")}}
                     </div>
+                    {% endif %}
                 </div>
             </div>
 

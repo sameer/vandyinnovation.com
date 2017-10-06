@@ -1,19 +1,30 @@
 <header>
-    <nav class="navbar-material top-nav">
+    <nav class="navbar-material top-nav nav-extended">
         <div class="nav-wrapper blue-grey darken-3">
             <a href="/" class="brand-logo hide-on-med-and-down">&nbsp;<span class="yellow-text text-darken-3">Vanderbilt</span> Medical Innovation Lab</a>
             <a href="/" class="brand-logo hide-on-large-only">&nbsp;<span class="yellow-text text-darken-3">V</span>MIL</a>
             <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 {% for navItem in context.get("navItems") %}
-                    <li class="{% if (title is not null) and (navItem.title equals title) %}{{"active"}}{% endif %}"><a href="{{ navItem.link }}">{{ navItem.title }}</a></li>
+
+                    <li class="{% if (context.get("myNavItem") is not null and navItem equals context.get("myNavItem")) %}{{"active"}}{% endif %}"><a href="{{ navItem.link }}">{{ navItem.title }}</a></li>
                 {% endfor %}
             </ul>
             <ul class="side-nav" id="mobile-menu">
                 {% for navItem in context.get("navItems") %}
-                    <li class="{% if (title is not null) and (navItem.title equals title) %}{{"active"}}{% endif %}"><a href="{{ navItem.link }}">{{ navItem.title }}</a></li>
+                    <li class="{% if (context.get("title") is not null and navItem equals context.get("myNavItem")) %}{{"active"}}{% endif %}"><a href="{{ navItem.link }}">{{ navItem.title }}</a></li>
                 {% endfor %}
             </ul>
         </div>
+        {% if context.get("myNavItem") is not null and not context.get("myNavItem").children.isEmpty() %}
+        <div class="nav-content blue-grey darken-3">
+            <ul class="tabs tabs-fixed-width tabs-transparent">
+              <li class="tab col s6 m6 l3"><a href="#main">{{ context.get("myNavItem").title }}</a></li>
+              {% for childNavItem in context.get("myNavItem").children %}
+                <li class="tab col s6 m6 l3"><a href="#{{ childNavItem.title.replaceAll(" ", "_") }}">{{ childNavItem.title }}</a></li>
+              {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </nav>
 </header>
