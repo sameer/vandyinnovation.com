@@ -1,8 +1,10 @@
 package io.spuri.vmil;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.http.ClientAuth;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.net.PemTrustOptions;
 import io.vertx.ext.web.Router;
 
 import java.util.HashMap;
@@ -43,7 +45,11 @@ public class Main extends AbstractVerticle {
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(
           new PemKeyCertOptions()
             .addKeyPath(System.getProperty("vertx.key"))
-            .addCertPath(System.getProperty("vertx.cert"))))
+            .addCertPath(System.getProperty("vertx.cert"))).setClientAuth(ClientAuth.REQUIRED)
+          .setPemTrustOptions(
+            new PemTrustOptions()
+            .addCertPath(System.getProperty("vertx.origin"))
+          ))
         .requestHandler(router::accept)
         .listen(
           Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
