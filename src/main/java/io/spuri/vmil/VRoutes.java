@@ -20,10 +20,6 @@ public class VRoutes {
                    .handler(GoogleHandler.create(m.getVertx(), "Sponsors").setPath("/assets/sponsors")),
         (Main m)
             -> m.router.route("/assets/*").handler(GoogleHandler.create(m.getVertx(), "Assets").setPath("/assets")),
-        (Main m)
-            -> m.router.route("/favicon.ico")
-                   .method(HttpMethod.GET)
-                   .handler(FaviconHandler.create("assets/favicon.ico")),
         (Main m) -> m.router.route("/").method(HttpMethod.GET).handler(ctx -> {
           ctx.put("desc", "VMIL Homepage");
           ctx.put("navItems", navItems);
