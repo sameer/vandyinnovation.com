@@ -3,7 +3,8 @@ package io.spuri.vmil;
 import java.util.function.Function;
 
 public class VUtils {
-  private static String clipHelper(String str, char toClipAt, Function<Integer, String> clipHandler) {
+  private static String clipHelper(
+      String str, char toClipAt, Function<Integer, String> clipHandler) {
     int i;
     return (i = str.lastIndexOf(toClipAt)) == -1 ? str : clipHandler.apply(i);
   }

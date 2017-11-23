@@ -14,7 +14,8 @@ import java.util.Map;
 import static io.spuri.vmil.VRoutes.dynamicroutes;
 
 public class Main extends AbstractVerticle {
-  static final Map<String, String> defaultProperties = new LinkedHashMap<>(); // Maintain insertion order
+  static final Map<String, String> defaultProperties =
+      new LinkedHashMap<>(); // Maintain insertion order
   static {
     defaultProperties.put("vertx.port", "8080");
     defaultProperties.put("vertx.host", "localhost");
@@ -42,23 +43,23 @@ public class Main extends AbstractVerticle {
 
     if (Boolean.parseBoolean(System.getProperty("vertx.ssl"))) {
       vertx
-        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(
-          new PemKeyCertOptions()
-            .addKeyPath(System.getProperty("vertx.key"))
-            .addCertPath(System.getProperty("vertx.cert"))).setClientAuth(ClientAuth.REQUIRED)
-          .setPemTrustOptions(
-            new PemTrustOptions()
-            .addCertPath(System.getProperty("vertx.origin"))
-          ))
-        .requestHandler(router::accept)
-        .listen(
-          Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
+          .createHttpServer(
+              new HttpServerOptions()
+                  .setSsl(true)
+                  .setPemKeyCertOptions(new PemKeyCertOptions()
+                                            .addKeyPath(System.getProperty("vertx.key"))
+                                            .addCertPath(System.getProperty("vertx.cert")))
+                  .setClientAuth(ClientAuth.REQUIRED)
+                  .setPemTrustOptions(
+                      new PemTrustOptions().addCertPath(System.getProperty("vertx.origin"))))
+          .requestHandler(router::accept)
+          .listen(
+              Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
     } else {
-      vertx
-        .createHttpServer(new HttpServerOptions())
-        .requestHandler(router::accept)
-        .listen(
-          Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
+      vertx.createHttpServer(new HttpServerOptions())
+          .requestHandler(router::accept)
+          .listen(
+              Integer.parseInt(System.getProperty("vertx.port")), System.getProperty("vertx.host"));
     }
   }
 }

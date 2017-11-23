@@ -17,9 +17,11 @@ public class VRoutes {
     dynamicroutes.addAll(Arrays.asList(
         (Main m)
             -> m.router.route("/assets/sponsors/*")
-                   .handler(GoogleHandler.create(m.getVertx(), "Sponsors").setPath("/assets/sponsors")),
+                   .handler(
+                       GoogleHandler.create(m.getVertx(), "Sponsors").setPath("/assets/sponsors")),
         (Main m)
-            -> m.router.route("/assets/*").handler(GoogleHandler.create(m.getVertx(), "Assets").setPath("/assets")),
+            -> m.router.route("/assets/*")
+                   .handler(GoogleHandler.create(m.getVertx(), "Assets").setPath("/assets")),
         (Main m) -> m.router.route("/").method(HttpMethod.GET).handler(ctx -> {
           ctx.put("desc", "VMIL Homepage");
           ctx.put("navItems", navItems);
@@ -56,7 +58,8 @@ public class VRoutes {
     return staticroutes;
   }
 
-  private static NI buildStaticRouteNavItems(List<RouteMaker> staticroutes, NI parentNI, GoogleHandler.GoogleDriveFileTreeNode fileTreeNode) {
+  private static NI buildStaticRouteNavItems(List<RouteMaker> staticroutes, NI parentNI,
+      GoogleHandler.GoogleDriveFileTreeNode fileTreeNode) {
     String filePathNoExtension = VUtils.googleClipExtension(fileTreeNode.data.getLeft());
     NI myNI = NI.create().title(VUtils.googleClipPath(filePathNoExtension)).parent(parentNI);
     for (GoogleHandler.GoogleDriveFileTreeNode treeNode : fileTreeNode.children) {
@@ -68,20 +71,20 @@ public class VRoutes {
         logger.info("Adding root NI " + myNI.title);
 
         for (NI ni : navItems) {
-         if (ni.link.equals(myNI.link)) {
-           ni.title(myNI.title);
-           ni.parent(parentNI);
-           logger.info("Matched file to NI entry " + ni.title + " with children " + ni.children.get(0).toString());
-           staticroutes.add(rmstatic(ni, fileTreeNode.data.getLeft(),
-             "VMIL: " + ni.title));
-           return ni;
-         }
+          if (ni.link.equals(myNI.link)) {
+            ni.title(myNI.title);
+            ni.parent(parentNI);
+            logger.info("Matched file to NI entry " + ni.title + " with children "
+                + ni.children.get(0).toString());
+            staticroutes.add(rmstatic(ni, fileTreeNode.data.getLeft(), "VMIL: " + ni.title));
+            return ni;
+          }
         }
-        staticroutes.add(rmstatic(myNI, fileTreeNode.data.getLeft(),
-          "VMIL: " + myNI.title));
+        staticroutes.add(rmstatic(myNI, fileTreeNode.data.getLeft(), "VMIL: " + myNI.title));
         navItems.add(myNI);
       } else {
-        for(NI ni : navItems) { // Find a matching top-level nav item if any and attach this folder's children to it
+        for (NI ni : navItems) { // Find a matching top-level nav item if any and attach this
+                                 // folder's children to it
           if (ni.link.equals(myNI.link)) {
             logger.info("Matched folder to NI entry " + ni.title);
             ni.children = myNI.children;
@@ -96,8 +99,7 @@ public class VRoutes {
     return myNI;
   }
 
-  private static RouteMaker rmstatic(
-      NI navItem, String markupFile, String description) {
+  private static RouteMaker rmstatic(NI navItem, String markupFile, String description) {
     if (staticPaths.containsKey(navItem.link)) {
       return (Main m) -> null; // This looks horrible but please bear with me for now
     } else {

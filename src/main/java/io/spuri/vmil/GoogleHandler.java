@@ -59,7 +59,7 @@ public class GoogleHandler implements Handler<RoutingContext> {
       try {
         Drive.Files.List req = drive.files().list();
         req.setCorpus("user");
-        req.setQ("mimeType = '"+ FOLDER_MIME_TYPE +"' and name = '" + folderName + "'");
+        req.setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = '" + folderName + "'");
         FileList fileList = req.execute();
         File folder = fileList.getFiles().get(0);
         rootTreeNode = new GoogleDriveFileTreeNode();
@@ -76,7 +76,6 @@ public class GoogleHandler implements Handler<RoutingContext> {
   }
 
   private void traverseGoogleDriveTree(GoogleDriveFileTreeNode myNode) throws IOException {
-
     Drive.Files.List req = drive.files().list();
     req.setCorpus("user");
     req.setQ("'" + myNode.data.getRight().getId() + "' in parents");
@@ -117,9 +116,9 @@ public class GoogleHandler implements Handler<RoutingContext> {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
 
-        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-            new InputStreamReader(
-                GoogleHandler.class.getResourceAsStream("/data/client_secrets.json")));
+        GoogleClientSecrets googleClientSecrets = GoogleClientSecrets.load(
+            JSON_FACTORY, new InputStreamReader(GoogleHandler.class.getResourceAsStream(
+                              "/data/client_secrets.json")));
         GoogleAuthorizationCodeFlow flow =
             new GoogleAuthorizationCodeFlow
                 .Builder(httpTransport, JSON_FACTORY, googleClientSecrets,

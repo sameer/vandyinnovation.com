@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class NI implements Comparable<NI> {
-
   public static NIModifier identity() {
     return (NI ni) -> ni;
   }
@@ -50,7 +49,7 @@ public class NI implements Comparable<NI> {
 
   @Override
   public String toString() {
-    return "[" + title + "," + link +"," + priority + "," + parent + "]";
+    return "[" + title + "," + link + "," + priority + "," + parent + "]";
   }
 }
 @FunctionalInterface
